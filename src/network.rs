@@ -101,7 +101,7 @@ impl Network {
                 let mut input_idxrs = Indexer::default();
                 input_idxrs.set_index(&sample_indices_array, 1, None);
                 input_idxrs.set_index(&output_seq4gen, 0, Some(false));
-                let training_outputs = index_gen(&training_data.inputs, input_idxrs);
+                let training_outputs = index_gen(&training_data.desired_outputs, input_idxrs);
 
                 // println!("Input Dims: {}", training_inputs.dims());
                 // println!("Desired Output Dims: {}", training_outputs.dims());
@@ -239,7 +239,7 @@ impl Network {
     pub fn evaluate(&mut self, test_inputs: &Array<f64>, desired_outputs: &Array<f64>) -> u32 {
         // Forward Prop
         let model_output = &self.feedforward(test_inputs);
-        println!("Model Output Dims: {}", model_output.dims());
+        // println!("Model Output Dims: {}", model_output.dims());
         // Find max indices of model
         let (_model_max_vals, model_max_indices) = imax(model_output, 0);
         // print(&model_max_indices);
@@ -251,7 +251,7 @@ impl Network {
         // print(&matching_array);
         // find sum of match indices
         let sum_matching_array = sum(&matching_array, 1);
-        print(&sum_matching_array);
+        // print(&sum_matching_array);
         // return matching sum
         let mut sum_host = vec![0; 1];
         sum_matching_array.host(&mut sum_host);

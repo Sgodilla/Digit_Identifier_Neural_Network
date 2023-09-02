@@ -14,7 +14,7 @@ fn main() {
         10,
         training_data.desired_outputs.dims()[0],
     ]);
-    network.SGD(&training_data, 30, 30, 30, 10.0, None);
+    network.SGD(&training_data, 30, 30, 30, 3.0, None);
     println!(
         "Final Test: {} / {}",
         network.evaluate(&test_data.inputs, &test_data.desired_outputs),
