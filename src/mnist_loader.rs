@@ -1,5 +1,4 @@
-use arrayfire::join_many;
-use arrayfire::print;
+use arrayfire::transpose;
 use arrayfire::Array;
 use arrayfire::Dim4;
 use byteorder::BigEndian;
@@ -66,7 +65,7 @@ pub fn load_data(dataset_name: &str) -> Result<MNISTData, std::io::Error> {
         &vector_inputs,
         Dim4::new(&[image_shape as u64, images_data.sizes[0] as u64, 1, 1]),
     );
-    println!("Inputs Dims: {}", inputs.dims());
+    let inputs = transpose(&inputs, false);
 
     let labels: Vec<u8> = label_data.data.clone();
     let vector_outputs: Vec<f64> = labels
@@ -79,9 +78,16 @@ pub fn load_data(dataset_name: &str) -> Result<MNISTData, std::io::Error> {
         .collect();
     let desired_outputs: Array<f64> = Array::new(
         &vector_outputs,
-        Dim4::new(&[10, label_data.sizes[0] as u64, 1, 1]),
+        Dim4::new(&[10, images_data.sizes[0] as u64, 1, 1]),
     );
-    println!("Output Dims: {}", desired_outputs.dims());
+    let desired_outputs = transpose(&desired_outputs, false);
+
+    println!(
+        "{name} Inputs Dims: {inputs_dim}, {name} Outputs Dims: {outputs_dim}",
+        name = dataset_name,
+        inputs_dim = inputs.dims(),
+        outputs_dim = desired_outputs.dims()
+    );
 
     Ok(MNISTData {
         inputs,

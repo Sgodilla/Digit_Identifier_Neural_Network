@@ -9,15 +9,14 @@ fn main() {
     println!("Finished Loading MNIST Data!");
 
     let mut network = Network::new(vec![
-        training_data.inputs.dims()[0],
+        training_data.inputs.dims()[1],
         30,
-        10,
-        training_data.desired_outputs.dims()[0],
+        training_data.desired_outputs.dims()[1],
     ]);
-    network.SGD(&training_data, 30, 30, 30, 10.0, None);
+    network.stochastic_gradient_descent(&training_data, 100, 100, 3.0, Some(&test_data));
     println!(
         "Final Test: {} / {}",
         network.evaluate(&test_data.inputs, &test_data.desired_outputs),
-        test_data.desired_outputs.dims()[1]
+        test_data.desired_outputs.dims()[0]
     );
 }
