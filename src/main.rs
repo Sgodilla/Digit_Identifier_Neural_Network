@@ -13,7 +13,7 @@ fn main() {
         30,
         training_data.desired_outputs.dims()[1],
     ]);
-    network.stochastic_gradient_descent(&training_data, 100, 100, 3.0, Some(&test_data));
+    network.stochastic_gradient_descent(&training_data, 30, 100, 3.0, Some(&test_data));
     println!(
         "Final Test: {} / {}",
         network.evaluate(&test_data.inputs, &test_data.desired_outputs),
