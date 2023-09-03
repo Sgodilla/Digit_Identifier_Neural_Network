@@ -25,12 +25,9 @@ impl Network {
             .iter()
             .enumerate()
             .map(|(index, _)| {
-                randn::<f64>(Dim4::new(&[
-                    layer_dims[index] + 1,
-                    layer_dims[index + 1],
-                    1,
-                    1,
-                ]))
+                let weight_dims = &[layer_dims[index] + 1, layer_dims[index + 1], 1, 1];
+                randn::<f64>(Dim4::new(weight_dims))
+                    / sqrt(&constant(layer_dims[index + 1], Dim4::new(weight_dims)))
             })
             .collect::<Vec<Array<f64>>>();
 
